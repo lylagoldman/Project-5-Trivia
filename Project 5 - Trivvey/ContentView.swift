@@ -27,13 +27,14 @@ func decode() -> [Question] {
 
 struct ContentView: View {
     @State private var decodedQuestions = decode()
+    @State private var score: Int = 0
     
     var body: some View {
         NavigationStack {
             List {
                 ForEach(decodedQuestions.prefix(10).indices, id: \.self) { index in
                     NavigationLink {
-                        QuestionView(questions: decodedQuestions, index: index)
+                        QuestionView(questions: decodedQuestions, index: index, score: $score)
                     } label: {
                         Text(decodedQuestions[index].question)
                             .font(.title3)
@@ -41,8 +42,7 @@ struct ContentView: View {
                     }
                 }
             }
-                
-            .navigationTitle("Trivvey")
+            .navigationTitle("Score: \(score)")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { decodedQuestions.shuffle()

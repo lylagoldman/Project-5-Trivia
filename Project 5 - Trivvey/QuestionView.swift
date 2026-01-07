@@ -12,9 +12,18 @@ struct QuestionView: View {
     let questions: [Question]
     let index: Int
     @State private var selectedAnswer: String? = nil
+    @Binding var score: Int
+    @State private var hasScoredForThisQuestion = false
     
     func correctAnswer() -> Bool {
         return selectedAnswer == questions[index].answer
+    }
+    
+    func updateScore() {
+        if correctAnswer(), !hasScoredForThisQuestion {
+            score += 1
+            hasScoredForThisQuestion = true
+        }
     }
     
     private var answerFeedback: some View {
@@ -41,7 +50,6 @@ struct QuestionView: View {
     
     var body: some View {
         VStack {
-            
             HStack {
                 Text(questions[index].question)
                     .font(.title2)
@@ -61,6 +69,7 @@ struct QuestionView: View {
                 HStack {
                     Button {
                         selectedAnswer = "A"
+                        updateScore()
                     } label: {
                         Text("A.")
                             .fontWeight(.bold)
@@ -83,6 +92,7 @@ struct QuestionView: View {
                 HStack {
                     Button {
                         selectedAnswer = "B"
+                        updateScore()
                     } label: {
                         Text("B.")
                             .fontWeight(.bold)
@@ -107,6 +117,7 @@ struct QuestionView: View {
             HStack {
                 Button {
                     selectedAnswer = "C"
+                    updateScore()
                 } label: {
                     HStack {
                         Text("C.")
@@ -129,6 +140,7 @@ struct QuestionView: View {
                 
                 Button {
                     selectedAnswer = "D"
+                    updateScore()
                 } label: {
                     HStack {
                         Text("D.")
